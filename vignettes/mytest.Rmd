@@ -1,0 +1,23 @@
+---
+title: "Untitled"
+author: "lin"
+date: "2020/8/14"
+output: html_document
+---
+
+ 
+```{r, echo=FALSE, message=FALSE}
+library(Statamarkdown)
+
+```
+
+
+
+```{stata, collectcode=TRUE, echo=FALSE, cleanlog=FALSE,results="hidden"}
+// 清除報表: 殺掉暫存檔 out_v2*.html
+local xfigfile : dir . files "out_v2*.html"
+foreach fn of local xfigfile {
+ erase `fn'
+}
+
+```

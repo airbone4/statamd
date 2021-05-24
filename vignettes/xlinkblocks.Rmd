@@ -1,0 +1,65 @@
+---
+title: "Linking Code Blocks"
+author: "Doug Hemken"
+date: "`r format(Sys.Date(), '%b %Y')`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Linking Code Blocks}
+  %\VignetteEncoding{UTF-8}
+---
+
+Each code chunk in your dynamic markdown document runs
+as a separate batch file in Stata.  This means that
+the results of one code chunk do ***not*** automatically
+carry over to the next.  You can have the results of
+a chunk carry over to all subsequent chunks by using
+the `collectcode=TRUE` chunk option.
+
+Collected code accumulates, and runs silently before each
+subsequent chunk.
+
+## Setup Stata Engine
+(If necessary, manually specify the Stata executable location.)
+```{r stata_setup}
+library(Statamarkdown)
+stataexe <- find_stata()
+```
+
+## An Example
+In this example we calculate a new variable in a first
+code chunk.  Then in a later code chunk we also use 
+the new variable.
+
+### First code block:
+In the first code chunk, use the `collectcode` option.
+
+    ```{stata first-Stata, collectcode=TRUE}`r ''`
+    sysuse auto, clear
+    generate gpm = 1/mpg
+    summarize price gpm
+    ```
+
+Which looks like this in your document:
+```{stata first-Stata, collectcode=TRUE}
+sysuse auto, clear
+generate gpm = 1/mpg
+summarize price gpm
+```
+
+### Second code block:
+Then you can use the new variable in a later code chunk.
+
+    ```{stata second-Stata}`r ''`
+    regress price gpm
+    ```
+    
+Which looks like this in your document:
+```{stata second-Stata}
+regress price gpm
+```
+
+
+```{r detach, include=FALSE}
+detach(package:Statamarkdown)
+```
