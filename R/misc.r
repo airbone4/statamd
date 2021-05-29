@@ -22,6 +22,7 @@
 
   stata_collectcode()
 #  packageStartupMessage("collectcode option defined")
+# mynote: 原來的輸出
   assign("hook_orig", knitr::knit_hooks$get("output"), pos=2)
   knitr::knit_hooks$set(output = stataoutputhook)
 #  packageStartupMessage("output for Stata redefined")
