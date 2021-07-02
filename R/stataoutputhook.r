@@ -1,11 +1,8 @@
 stataoutputhook <- function(x, options) {
     message(paste("\n", options$engine, "output from chunk", options$label))
-# print("input to stataoutputhook")
-# print(x)
-    
+
     if (options$engine=="stata") {
       y <- strsplit(x, "\n")[[1]]
-# print(y)
       # # Remove "running profile.do"
       # running <- grep("^\\.?[[:space:]]?running[[:space:]].*profile.do", y)
       # if (length(running)>0) {y[running] <- sub("^\\.?[[:space:]]?running[[:space:]].*profile.do","", y[running])}
@@ -14,15 +11,15 @@ stataoutputhook <- function(x, options) {
       # Remove command echo in Stata log
       # mynote:下面去掉命列列如果選項cleanlog==true
       if (length(options$cleanlog)==0 | options$cleanlog!=FALSE) {
-        commandlines <- grep("^\\.[[:space:]]", y)
-# print(commandlines)
-# mynote: stata 迴圈 的前置文字
+        commandlines <- grep("^[[:space:]]?\\.[[:space:]]", y)
+        # commandlines <- grep("^\\.[[:space:]]", y) # 原來的
+        # mynote: stata 迴圈 的前置文字
         if (length(commandlines)>0) {
           # loopcommands <- grep("^[[:space:]][[:space:]][[:digit:]+]\\.+[[:space:]]+[[:alnum:]]", y)
-          loopcommands <- grep("^[[:space:]]+[[:digit:]]+\\.[[:space:]]+", y)
+          loopcommands <- grep("^[[:space:]]+[[:digit:]]+\\.[[:space:]]+[^|]", y)
           commandlines <- c(commandlines, loopcommands)
         }
-# print(commandlines)
+
         continuations <- grep("^>[[:space:]]", y)
 #        print(y[continuations])
         if (length(commandlines)>0 && length(continuations)>0) {
@@ -32,11 +29,11 @@ stataoutputhook <- function(x, options) {
             }
           }
         }
-# print(commandlines)
-# print(y[commandlines])
+
         if (length(commandlines)>0) {y <- y[-(commandlines)]}
 
         # Some commands have a leading space?
+        # 應該是不用了
         if (length(grep("^[[:space:]*]\\.", y))>0) {
           y <- y[-(grep("^[[:space:]*]\\.", y))]
         }
