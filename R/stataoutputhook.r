@@ -2,6 +2,7 @@ stataoutputhook <- function(x, options) {
     message(paste("\n", options$engine, "output from chunk", options$label))
 # print("input to stataoutputhook")
 # print(x)
+    
     if (options$engine=="stata") {
       y <- strsplit(x, "\n")[[1]]
 # print(y)
@@ -11,9 +12,11 @@ stataoutputhook <- function(x, options) {
 #      print("running removed")
 # print(y)
       # Remove command echo in Stata log
+      # mynote:下面去掉命列列如果選項cleanlog==true
       if (length(options$cleanlog)==0 | options$cleanlog!=FALSE) {
         commandlines <- grep("^\\.[[:space:]]", y)
 # print(commandlines)
+# mynote: stata 迴圈 的前置文字
         if (length(commandlines)>0) {
           # loopcommands <- grep("^[[:space:]][[:space:]][[:digit:]+]\\.+[[:space:]]+[[:alnum:]]", y)
           loopcommands <- grep("^[[:space:]]+[[:digit:]]+\\.[[:space:]]+", y)
