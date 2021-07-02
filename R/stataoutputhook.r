@@ -15,8 +15,8 @@ stataoutputhook <- function(x, options) {
         commandlines <- grep("^\\.[[:space:]]", y)
 # print(commandlines)
         if (length(commandlines)>0) {
-          # loopcommands <- grep("^[[:space:]][[:space:]][[:digit:]+]\\.", y)
-          loopcommands <- grep("^[[:space:]]+[[:digit:]]+\\.", y)
+          # loopcommands <- grep("^[[:space:]][[:space:]][[:digit:]+]\\.+[[:space:]]+[[:alnum:]]", y)
+          loopcommands <- grep("^[[:space:]]+[[:digit:]]+\\.[[:space:]]+", y)
           commandlines <- c(commandlines, loopcommands)
         }
 # print(commandlines)
