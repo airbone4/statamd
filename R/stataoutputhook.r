@@ -2,7 +2,7 @@ stataoutputhook <- function(x, options) {
     message(paste("\n", options$engine, "output from chunk", options$label))
 
     if (options$engine=="stata") {
-      options$class.output="?lang=stata?preclass=codeout"
+      #options$class.output="?lang=stata?preclass=codeout"
       y <- strsplit(x, "\n")[[1]]
       # # Remove "running profile.do"
       # running <- grep("^\\.?[[:space:]]?running[[:space:]].*profile.do", y)
